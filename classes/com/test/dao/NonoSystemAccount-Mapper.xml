@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoSystemAccountDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		account_id as accountId,
+	user_code as userCode,
+	nono_code as nonoCode,
+	user_type as userType,
+	product_code as productCode,
+	order_id as orderId,
+	finance_in as financeIn,
+	finance_out as financeOut,
+	balance as balance,
+	status as status,
+	create_date as createDate
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="userCode != null  and userCode !=-1  ">
+		     and user_code=#{userCode} 
+	      </if>
+		  <if test="nonoCode != null  and nonoCode != '' ">
+		     and nono_code=#{nonoCode} 
+	      </if>
+		  <if test="userType != null  and userType != '' ">
+		     and user_type=#{userType} 
+	      </if>
+		  <if test="productCode != null  and productCode != '' ">
+		     and product_code=#{productCode} 
+	      </if>
+		  <if test="orderId != null  and orderId != '' ">
+		     and order_id=#{orderId} 
+	      </if>
+		  <if test="financeIn != null  and financeIn != '' ">
+		     and finance_in=#{financeIn} 
+	      </if>
+		  <if test="financeOut != null  and financeOut != '' ">
+		     and finance_out=#{financeOut} 
+	      </if>
+		  <if test="balance != null  and balance != '' ">
+		     and balance=#{balance} 
+	      </if>
+		  <if test="status != null  and status !=-1  ">
+		     and status=#{status} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.userCode != null  and t.userCode !=-1  ">
+		     and user_code=#{t.userCode} 
+	      </if>
+		  <if test="t.nonoCode != null  and t.nonoCode != '' ">
+		     and nono_code=#{t.nonoCode} 
+	      </if>
+		  <if test="t.userType != null  and t.userType != '' ">
+		     and user_type=#{t.userType} 
+	      </if>
+		  <if test="t.productCode != null  and t.productCode != '' ">
+		     and product_code=#{t.productCode} 
+	      </if>
+		  <if test="t.orderId != null  and t.orderId != '' ">
+		     and order_id=#{t.orderId} 
+	      </if>
+		  <if test="t.financeIn != null  ">
+		     and finance_in=#{t.financeIn} 
+	      </if>
+		  <if test="t.financeOut != null  ">
+		     and finance_out=#{t.financeOut} 
+	      </if>
+		  <if test="t.balance != null  ">
+		     and balance=#{t.balance} 
+	      </if>
+		  <if test="t.status != null  and t.status !=-1  ">
+		     and status=#{t.status} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoSystemAccount" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_system_account	
+		where	
+			account_id = #{accountId} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoSystemAccount" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_system_account  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoSystemAccount" parameterType="nonoSystemAccount">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_system_account  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoSystemAccount" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_system_account  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoSystemAccount" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_system_account  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoSystemAccount" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_system_account  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoSystemAccount" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_system_account  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoSystemAccount" >
+		insert into nono_system_account (user_code,nono_code,user_type,product_code,order_id,finance_in,finance_out,balance,status,create_date)
+	     values 
+	     (
+	         #{userCode}, #{nonoCode}, #{userType}, #{productCode}, #{orderId}, #{financeIn}, #{financeOut}, #{balance}, #{status}, now()
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_system_account (user_code,nono_code,user_type,product_code,order_id,finance_in,finance_out,balance,status,create_date)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.userCode}, #{item.nonoCode}, #{item.userType}, #{item.productCode}, #{item.orderId}, #{item.financeIn}, #{item.financeOut}, #{item.balance}, #{item.status}, now()
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoSystemAccount" >
+		 update nono_system_account 
+    	<set> 
+        	 <if test="userCode != null  and userCode !=-1  ">
+		      user_code=#{userCode}, 
+        	</if> 
+        	 <if test="nonoCode != null  and nonoCode != '' ">
+		      nono_code=#{nonoCode}, 
+        	</if> 
+        	 <if test="userType != null  and userType != '' ">
+		      user_type=#{userType}, 
+        	</if> 
+        	 <if test="productCode != null  and productCode != '' ">
+		      product_code=#{productCode}, 
+        	</if> 
+        	 <if test="orderId != null  and orderId != '' ">
+		      order_id=#{orderId}, 
+        	</if> 
+        	 <if test="financeIn != null  and financeIn != '' ">
+		      finance_in=#{financeIn}, 
+        	</if> 
+        	 <if test="financeOut != null  and financeOut != '' ">
+		      finance_out=#{financeOut}, 
+        	</if> 
+        	 <if test="balance != null  and balance != '' ">
+		      balance=#{balance}, 
+        	</if> 
+        	 <if test="status != null  and status !=-1  ">
+		      status=#{status}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate} 
+        	</if> 
+    	</set>  
+	    where  account_id = #{accountId}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_system_account  set  updateCloumn = #{updateCloumn} 
+	    where account_id  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_system_account  where  account_id = #{accountId}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_system_account  where  account_id in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN系统账户管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_system_account
+	</select>
+	
+	
+	<!-- NN系统账户管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoSystemAccount">
+		select 
+			count(1) 
+		from 
+			nono_system_account  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoUserProductDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		product_id as productId,
+	user_code as userCode,
+	nono_code as nonoCode,
+	order_id as orderId,
+	trans_code as transCode,
+	product_code as productCode,
+	invest_amount as investAmount,
+	remaining_principal as remainingPrincipal,
+	user_type as userType,
+	create_date as createDate,
+	update_date as updateDate
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="userCode != null  and userCode !=-1  ">
+		     and user_code=#{userCode} 
+	      </if>
+		  <if test="nonoCode != null  and nonoCode != '' ">
+		     and nono_code=#{nonoCode} 
+	      </if>
+		  <if test="orderId != null  and orderId != '' ">
+		     and order_id=#{orderId} 
+	      </if>
+		  <if test="transCode != null  and transCode !=-1  ">
+		     and trans_code=#{transCode} 
+	      </if>
+		  <if test="productCode != null  and productCode != '' ">
+		     and product_code=#{productCode} 
+	      </if>
+		  <if test="investAmount != null  and investAmount != '' ">
+		     and invest_amount=#{investAmount} 
+	      </if>
+		  <if test="remainingPrincipal != null  and remainingPrincipal != '' ">
+		     and remaining_principal=#{remainingPrincipal} 
+	      </if>
+		  <if test="userType != null  and userType != '' ">
+		     and user_type=#{userType} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		  <if test="updateDate != null  and updateDate != '' ">
+		     and update_date=#{updateDate} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.userCode != null  and t.userCode !=-1  ">
+		     and user_code=#{t.userCode} 
+	      </if>
+		  <if test="t.nonoCode != null  and t.nonoCode != '' ">
+		     and nono_code=#{t.nonoCode} 
+	      </if>
+		  <if test="t.orderId != null  and t.orderId != '' ">
+		     and order_id=#{t.orderId} 
+	      </if>
+		  <if test="t.transCode != null  and t.transCode !=-1  ">
+		     and trans_code=#{t.transCode} 
+	      </if>
+		  <if test="t.productCode != null  and t.productCode != '' ">
+		     and product_code=#{t.productCode} 
+	      </if>
+		  <if test="t.investAmount != null  ">
+		     and invest_amount=#{t.investAmount} 
+	      </if>
+		  <if test="t.remainingPrincipal != null  ">
+		     and remaining_principal=#{t.remainingPrincipal} 
+	      </if>
+		  <if test="t.userType != null  and t.userType != '' ">
+		     and user_type=#{t.userType} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		  <if test="t.updateDate != null  and t.updateDate != '' ">
+		     and update_date=#{t.updateDate} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoUserProduct" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product	
+		where	
+			product_id = #{productId} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoUserProduct" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_user_product  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoUserProduct" parameterType="nonoUserProduct">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_user_product  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoUserProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoUserProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoUserProduct" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoUserProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoUserProduct" >
+		insert into nono_user_product (user_code,nono_code,order_id,trans_code,product_code,invest_amount,remaining_principal,user_type,create_date,update_date)
+	     values 
+	     (
+	         #{userCode}, #{nonoCode}, #{orderId}, #{transCode}, #{productCode}, #{investAmount}, #{remainingPrincipal}, #{userType}, now(), now()
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_user_product (user_code,nono_code,order_id,trans_code,product_code,invest_amount,remaining_principal,user_type,create_date,update_date)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.userCode}, #{item.nonoCode}, #{item.orderId}, #{item.transCode}, #{item.productCode}, #{item.investAmount}, #{item.remainingPrincipal}, #{item.userType}, now(), now()
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoUserProduct" >
+		 update nono_user_product 
+    	<set> 
+        	 <if test="userCode != null  and userCode !=-1  ">
+		      user_code=#{userCode}, 
+        	</if> 
+        	 <if test="nonoCode != null  and nonoCode != '' ">
+		      nono_code=#{nonoCode}, 
+        	</if> 
+        	 <if test="orderId != null  and orderId != '' ">
+		      order_id=#{orderId}, 
+        	</if> 
+        	 <if test="transCode != null  and transCode !=-1  ">
+		      trans_code=#{transCode}, 
+        	</if> 
+        	 <if test="productCode != null  and productCode != '' ">
+		      product_code=#{productCode}, 
+        	</if> 
+        	 <if test="investAmount != null  and investAmount != '' ">
+		      invest_amount=#{investAmount}, 
+        	</if> 
+        	 <if test="remainingPrincipal != null  and remainingPrincipal != '' ">
+		      remaining_principal=#{remainingPrincipal}, 
+        	</if> 
+        	 <if test="userType != null  and userType != '' ">
+		      user_type=#{userType}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate}, 
+        	</if> 
+        	 <if test="updateDate != null  and updateDate != '' ">
+		      update_date=now() 
+        	</if> 
+    	</set>  
+	    where  product_id = #{productId}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_user_product  set  updateCloumn = #{updateCloumn} 
+	    where product_id  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_user_product  where  product_id = #{productId}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_user_product  where  product_id in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN债权管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_user_product
+	</select>
+	
+	
+	<!-- NN债权管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoUserProduct">
+		select 
+			count(1) 
+		from 
+			nono_user_product  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>

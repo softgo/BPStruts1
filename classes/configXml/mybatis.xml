@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://www.mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+	
+		<!-- 系统实体Bean一个别名-->
+		<typeAlias type="com.javabase.entity.LoginLogs" alias="LoginLogs" />
+		<typeAlias type="com.javabase.entity.SysLogs" alias="SysLogs"/>
+		<typeAlias type="com.javabase.entity.SysRoles" alias="SysRoles"/>
+		<typeAlias type="com.javabase.entity.SysSources" alias="SysSources"/>
+		<typeAlias type="com.javabase.entity.SysSourcesRoles" alias="SysSourcesRoles"/>
+		<typeAlias type="com.javabase.entity.SysUsers" alias="SysUsers"/>
+		<typeAlias type="com.javabase.entity.SysUsersRoles" alias="SysUsersRoles" />
+        <typeAlias type="com.javabase.entity.SysServerInfos" alias="SysServerInfos" />
+        
+        <typeAlias type="com.test.entity.NonoUser" alias="nonoUser" />
+        <!-- 诺诺钱包 -->
+    	<typeAlias type="com.test.entity.NonoDebtAllocateErr" alias="NonoDebtAllocateErr"/>
+    	<typeAlias type="com.test.entity.NonoSystemAccount" alias="NonoSystemAccount"/>
+    	<typeAlias type="com.test.entity.NonoTransDetail" alias="NonoTransDetail"/>
+    	<typeAlias type="com.test.entity.NonoUserProduct" alias="NonoUserProduct"/>
+    	<typeAlias type="com.test.entity.NonoUserProductDetail" alias="NonoUserProductDetail"/>
+    	<typeAlias type="com.test.entity.NonoLimitProduct" alias="NonoLimitProduct"/>
+    	<typeAlias type="com.test.dto.DebtDetailBean" alias="DebtDetailBean"/>
+    	<typeAlias type="com.test.dto.DebterBean" alias="DebterBean"/>
+    	<typeAlias type="com.test.dto.UserAssetsBean" alias="UserAssetsBean"/>
+        
+	</typeAliases>
+	
+</configuration>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoDebtAllocateErrDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		debt_err_id as debtErrId,
+	param as param,
+	message as message,
+	order_id as orderId,
+	user_code as userCode,
+	nono_code as nonoCode,
+	type as type,
+	user_type as userType,
+	create_date as createDate
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="param != null  and param != '' ">
+		     and param=#{param} 
+	      </if>
+		  <if test="message != null  and message != '' ">
+		     and message=#{message} 
+	      </if>
+		  <if test="orderId != null  and orderId != '' ">
+		     and order_id=#{orderId} 
+	      </if>
+		  <if test="userCode != null  and userCode !=-1  ">
+		     and user_code=#{userCode} 
+	      </if>
+		  <if test="nonoCode != null  and nonoCode != '' ">
+		     and nono_code=#{nonoCode} 
+	      </if>
+		  <if test="type != null  and type !=-1  ">
+		     and type=#{type} 
+	      </if>
+		  <if test="userType != null  and userType != '' ">
+		     and user_type=#{userType} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.param != null  and t.param != '' ">
+		     and param=#{t.param} 
+	      </if>
+		  <if test="t.message != null  and t.message != '' ">
+		     and message=#{t.message} 
+	      </if>
+		  <if test="t.orderId != null  and t.orderId != '' ">
+		     and order_id=#{t.orderId} 
+	      </if>
+		  <if test="t.userCode != null  and t.userCode !=-1  ">
+		     and user_code=#{t.userCode} 
+	      </if>
+		  <if test="t.nonoCode != null  and t.nonoCode != '' ">
+		     and nono_code=#{t.nonoCode} 
+	      </if>
+		  <if test="t.type != null  and t.type !=-1  ">
+		     and type=#{t.type} 
+	      </if>
+		  <if test="t.userType != null  and t.userType != '' ">
+		     and user_type=#{t.userType} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoDebtAllocateErr" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_debt_allocate_err	
+		where	
+			debt_err_id = #{debtErrId} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoDebtAllocateErr" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_debt_allocate_err  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoDebtAllocateErr" parameterType="nonoDebtAllocateErr">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_debt_allocate_err  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoDebtAllocateErr" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_debt_allocate_err  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoDebtAllocateErr" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_debt_allocate_err  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoDebtAllocateErr" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_debt_allocate_err  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoDebtAllocateErr" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_debt_allocate_err  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoDebtAllocateErr" >
+		insert into nono_debt_allocate_err (param,message,order_id,user_code,nono_code,type,user_type,create_date)
+	     values 
+	     (
+	         #{param}, #{message}, #{orderId}, #{userCode}, #{nonoCode}, #{type}, #{userType}, now()
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_debt_allocate_err (param,message,order_id,user_code,nono_code,type,user_type,create_date)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.param}, #{item.message}, #{item.orderId}, #{item.userCode}, #{item.nonoCode}, #{item.type}, #{item.userType}, now()
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoDebtAllocateErr" >
+		 update nono_debt_allocate_err 
+    	<set> 
+        	 <if test="param != null  and param != '' ">
+		      param=#{param}, 
+        	</if> 
+        	 <if test="message != null  and message != '' ">
+		      message=#{message}, 
+        	</if> 
+        	 <if test="orderId != null  and orderId != '' ">
+		      order_id=#{orderId}, 
+        	</if> 
+        	 <if test="userCode != null  and userCode !=-1  ">
+		      user_code=#{userCode}, 
+        	</if> 
+        	 <if test="nonoCode != null  and nonoCode != '' ">
+		      nono_code=#{nonoCode}, 
+        	</if> 
+        	 <if test="type != null  and type !=-1  ">
+		      type=#{type}, 
+        	</if> 
+        	 <if test="userType != null  and userType != '' ">
+		      user_type=#{userType}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate} 
+        	</if> 
+    	</set>  
+	    where  debt_err_id = #{debtErrId}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_debt_allocate_err  set  updateCloumn = #{updateCloumn} 
+	    where debt_err_id  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_debt_allocate_err  where  debt_err_id = #{debtErrId}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_debt_allocate_err  where  debt_err_id in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN债权错误管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_debt_allocate_err
+	</select>
+	
+	
+	<!-- NN债权错误管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoDebtAllocateErr">
+		select 
+			count(1) 
+		from 
+			nono_debt_allocate_err  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>

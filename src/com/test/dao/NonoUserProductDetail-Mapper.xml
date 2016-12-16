@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoUserProductDetailDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		detail_id as detailId,
+	user_product_id as userProductId,
+	debt_detail_id as debtDetailId,
+	invest_amount as investAmount,
+	change_resource as changeResource,
+	user_type as userType,
+	create_date as createDate,
+	update_date as updateDate
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="userProductId != null  and userProductId !=-1  ">
+		     and user_product_id=#{userProductId} 
+	      </if>
+		  <if test="debtDetailId != null  and debtDetailId !=-1  ">
+		     and debt_detail_id=#{debtDetailId} 
+	      </if>
+		  <if test="investAmount != null  and investAmount != '' ">
+		     and invest_amount=#{investAmount} 
+	      </if>
+		  <if test="changeResource != null  and changeResource !=-1  ">
+		     and change_resource=#{changeResource} 
+	      </if>
+		  <if test="userType != null  and userType != '' ">
+		     and user_type=#{userType} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		  <if test="updateDate != null  and updateDate != '' ">
+		     and update_date=#{updateDate} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.userProductId != null  and t.userProductId !=-1  ">
+		     and user_product_id=#{t.userProductId} 
+	      </if>
+		  <if test="t.debtDetailId != null  and t.debtDetailId !=-1  ">
+		     and debt_detail_id=#{t.debtDetailId} 
+	      </if>
+		  <if test="t.investAmount != null  ">
+		     and invest_amount=#{t.investAmount} 
+	      </if>
+		  <if test="t.changeResource != null  and t.changeResource !=-1  ">
+		     and change_resource=#{t.changeResource} 
+	      </if>
+		  <if test="t.userType != null  and t.userType != '' ">
+		     and user_type=#{t.userType} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		  <if test="t.updateDate != null  and t.updateDate != '' ">
+		     and update_date=#{t.updateDate} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoUserProductDetail" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product_detail	
+		where	
+			detail_id = #{detailId} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoUserProductDetail" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_user_product_detail  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoUserProductDetail" parameterType="nonoUserProductDetail">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_user_product_detail  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoUserProductDetail" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product_detail  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoUserProductDetail" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product_detail  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoUserProductDetail" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product_detail  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoUserProductDetail" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user_product_detail  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoUserProductDetail" >
+		insert into nono_user_product_detail (user_product_id,debt_detail_id,invest_amount,change_resource,user_type,create_date,update_date)
+	     values 
+	     (
+	         #{userProductId}, #{debtDetailId}, #{investAmount}, #{changeResource}, #{userType}, now(), now()
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_user_product_detail (user_product_id,debt_detail_id,invest_amount,change_resource,user_type,create_date,update_date)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.userProductId}, #{item.debtDetailId}, #{item.investAmount}, #{item.changeResource}, #{item.userType}, now(), now()
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoUserProductDetail" >
+		 update nono_user_product_detail 
+    	<set> 
+        	 <if test="userProductId != null  and userProductId !=-1  ">
+		      user_product_id=#{userProductId}, 
+        	</if> 
+        	 <if test="debtDetailId != null  and debtDetailId !=-1  ">
+		      debt_detail_id=#{debtDetailId}, 
+        	</if> 
+        	 <if test="investAmount != null  and investAmount != '' ">
+		      invest_amount=#{investAmount}, 
+        	</if> 
+        	 <if test="changeResource != null  and changeResource !=-1  ">
+		      change_resource=#{changeResource}, 
+        	</if> 
+        	 <if test="userType != null  and userType != '' ">
+		      user_type=#{userType}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate}, 
+        	</if> 
+        	 <if test="updateDate != null  and updateDate != '' ">
+		      update_date=now() 
+        	</if> 
+    	</set>  
+	    where  detail_id = #{detailId}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_user_product_detail  set  updateCloumn = #{updateCloumn} 
+	    where detail_id  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_user_product_detail  where  detail_id = #{detailId}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_user_product_detail  where  detail_id in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN债权明细管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_user_product_detail
+	</select>
+	
+	
+	<!-- NN债权明细管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoUserProductDetail">
+		select 
+			count(1) 
+		from 
+			nono_user_product_detail  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>

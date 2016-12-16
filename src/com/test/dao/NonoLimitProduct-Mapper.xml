@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoLimitProductDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		product_id as productId,
+	product_code as productCode,
+	issue as issue,
+	init_stock as initStock,
+	balance as balance,
+	finance_in as financeIn,
+	finance_out as financeOut,
+	start_time as startTime,
+	end_time as endTime,
+	create_date as createDate,
+	update_date as updateDate,
+	status as status
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="productCode != null  and productCode != '' ">
+		     and product_code=#{productCode} 
+	      </if>
+		  <if test="issue != null  and issue !=-1  ">
+		     and issue=#{issue} 
+	      </if>
+		  <if test="initStock != null  and initStock != '' ">
+		     and init_stock=#{initStock} 
+	      </if>
+		  <if test="balance != null  and balance != '' ">
+		     and balance=#{balance} 
+	      </if>
+		  <if test="financeIn != null  and financeIn != '' ">
+		     and finance_in=#{financeIn} 
+	      </if>
+		  <if test="financeOut != null  and financeOut != '' ">
+		     and finance_out=#{financeOut} 
+	      </if>
+		  <if test="startTime != null  and startTime != '' ">
+		     and start_time=#{startTime} 
+	      </if>
+		  <if test="endTime != null  and endTime != '' ">
+		     and end_time=#{endTime} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		  <if test="updateDate != null  and updateDate != '' ">
+		     and update_date=#{updateDate} 
+	      </if>
+		  <if test="status != null  and status !=-1  ">
+		     and status=#{status} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.productCode != null  and t.productCode != '' ">
+		     and product_code=#{t.productCode} 
+	      </if>
+		  <if test="t.issue != null  and t.issue !=-1  ">
+		     and issue=#{t.issue} 
+	      </if>
+		  <if test="t.initStock != null  ">
+		     and init_stock=#{t.initStock} 
+	      </if>
+		  <if test="t.balance != null  ">
+		     and balance=#{t.balance} 
+	      </if>
+		  <if test="t.financeIn != null  ">
+		     and finance_in=#{t.financeIn} 
+	      </if>
+		  <if test="t.financeOut != null  ">
+		     and finance_out=#{t.financeOut} 
+	      </if>
+		  <if test="t.startTime != null  and t.startTime != '' ">
+		     and start_time=#{t.startTime} 
+	      </if>
+		  <if test="t.endTime != null  and t.endTime != '' ">
+		     and end_time=#{t.endTime} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		  <if test="t.updateDate != null  and t.updateDate != '' ">
+		     and update_date=#{t.updateDate} 
+	      </if>
+		  <if test="t.status != null  and t.status !=-1  ">
+		     and status=#{t.status} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoLimitProduct" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_limit_product	
+		where	
+			product_id = #{productId} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoLimitProduct" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_limit_product  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoLimitProduct" parameterType="nonoLimitProduct">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_limit_product  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoLimitProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_limit_product  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoLimitProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_limit_product  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoLimitProduct" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_limit_product  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoLimitProduct" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_limit_product  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoLimitProduct" >
+		insert into nono_limit_product (product_code,issue,init_stock,balance,finance_in,finance_out,start_time,end_time,create_date,update_date,status)
+	     values 
+	     (
+	         #{productCode}, #{issue}, #{initStock}, #{balance}, #{financeIn}, #{financeOut}, #{startTime}, #{endTime}, now(), now(), #{status}
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_limit_product (product_code,issue,init_stock,balance,finance_in,finance_out,start_time,end_time,create_date,update_date,status)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.productCode}, #{item.issue}, #{item.initStock}, #{item.balance}, #{item.financeIn}, #{item.financeOut}, #{item.startTime}, #{item.endTime}, now(), now(), #{item.status}
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoLimitProduct" >
+		 update nono_limit_product 
+    	<set> 
+        	 <if test="productCode != null  and productCode != '' ">
+		      product_code=#{productCode}, 
+        	</if> 
+        	 <if test="issue != null  and issue !=-1  ">
+		      issue=#{issue}, 
+        	</if> 
+        	 <if test="initStock != null  and initStock != '' ">
+		      init_stock=#{initStock}, 
+        	</if> 
+        	 <if test="balance != null  and balance != '' ">
+		      balance=#{balance}, 
+        	</if> 
+        	 <if test="financeIn != null  and financeIn != '' ">
+		      finance_in=#{financeIn}, 
+        	</if> 
+        	 <if test="financeOut != null  and financeOut != '' ">
+		      finance_out=#{financeOut}, 
+        	</if> 
+        	 <if test="startTime != null  and startTime != '' ">
+		      start_time=#{startTime}, 
+        	</if> 
+        	 <if test="endTime != null  and endTime != '' ">
+		      end_time=#{endTime}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate}, 
+        	</if> 
+        	 <if test="updateDate != null  and updateDate != '' ">
+		      update_date=now(), 
+        	</if> 
+        	 <if test="status != null  and status !=-1  ">
+		      status=#{status} 
+        	</if> 
+    	</set>  
+	    where  product_id = #{productId}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_limit_product  set  updateCloumn = #{updateCloumn} 
+	    where product_id  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_limit_product  where  product_id = #{productId}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_limit_product  where  product_id in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN产品监控管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_limit_product
+	</select>
+	
+	
+	<!-- NN产品监控管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoLimitProduct">
+		select 
+			count(1) 
+		from 
+			nono_limit_product  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.test.dao.NonoUserDao" > 
+
+	<!-- Result Map-->
+	<!-- 使用时,放开.-->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="select_columns">
+		user_code as userCode,
+	user_name as userName,
+	mobile_number as mobileNumber,
+	nono_code as nonoCode,
+	certificate_number as certificateNumber,
+	user_type as userType,
+	is_delete as isDelete,
+	create_date as createDate,
+	update_date as updateDate
+	 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 One -->
+	<sql id="select_where_for_one">
+		<where> 
+	      1=1  
+	 	  <if test="userName != null  and userName != '' ">
+		     and user_name=#{userName} 
+	      </if>
+		  <if test="mobileNumber != null  and mobileNumber != '' ">
+		     and mobile_number=#{mobileNumber} 
+	      </if>
+		  <if test="nonoCode != null  and nonoCode != '' ">
+		     and nono_code=#{nonoCode} 
+	      </if>
+		  <if test="certificateNumber != null  and certificateNumber != '' ">
+		     and certificate_number=#{certificateNumber} 
+	      </if>
+		  <if test="userType != null  and userType != '' ">
+		     and user_type=#{userType} 
+	      </if>
+		  <if test="isDelete != null  and isDelete !=-1  ">
+		     and is_delete=#{isDelete} 
+	      </if>
+		  <if test="createDate != null  and createDate != '' ">
+		     and create_date=#{createDate} 
+	      </if>
+		  <if test="updateDate != null  and updateDate != '' ">
+		     and update_date=#{updateDate} 
+	      </if>
+		</where> 
+	</sql>
+	
+	
+	<!-- 查询条件罗列 List-->
+	<sql id="select_where_for_list">
+		<where> 
+	      1=1  
+	 	  <if test="t.userName != null  and t.userName != '' ">
+		     and user_name=#{t.userName} 
+	      </if>
+		  <if test="t.mobileNumber != null  and t.mobileNumber != '' ">
+		     and mobile_number=#{t.mobileNumber} 
+	      </if>
+		  <if test="t.nonoCode != null  and t.nonoCode != '' ">
+		     and nono_code=#{t.nonoCode} 
+	      </if>
+		  <if test="t.certificateNumber != null  and t.certificateNumber != '' ">
+		     and certificate_number=#{t.certificateNumber} 
+	      </if>
+		  <if test="t.userType != null  and t.userType != '' ">
+		     and user_type=#{t.userType} 
+	      </if>
+		  <if test="t.isDelete != null  and t.isDelete !=-1  ">
+		     and is_delete=#{t.isDelete} 
+	      </if>
+		  <if test="t.createDate != null  and t.createDate != '' ">
+		     and create_date=#{t.createDate} 
+	      </if>
+		  <if test="t.updateDate != null  and t.updateDate != '' ">
+		     and update_date=#{t.updateDate} 
+	      </if>
+		</where> 
+	</sql>
+
+
+	<!-- 根据ID查询(使用时候可能要变化) -->
+	<select id="findById" resultType="NonoUser" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user	
+		where	
+			user_code = #{userCode} 
+	</select>
+	
+	
+	<!-- 通过字段名字查询(使用时候,where中的字段-=columnName=-要自己改变.) -->
+	<select id="findByName" resultType="NonoUser" parameterType="java.lang.String">
+		select  
+			<include refid="select_columns" />  
+		from	
+			nono_user  
+		where	
+			columnName = #{columnName}  
+	</select>
+
+
+	<!-- 通过属性找对象. -->
+	<select id="findByProps" resultType="NonoUser" parameterType="nonoUser">
+		select  
+			<include refid="select_columns" />  
+		from 
+			nono_user  
+			<include refid="select_where_for_one" />  
+	</select>
+	
+	
+	<!-- 查询条件 -->
+	<select id="find" resultType="NonoUser" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user  
+			<include refid="select_where_for_list"/>      
+	</select>
+	
+	<!-- 查询条件 -->
+	<select id="findPage" resultType="NonoUser" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user  
+			<include refid="select_where_for_list"/>      
+	</select>
+
+	<!-- 查找所有 -->
+	<select id="findAll" resultType="NonoUser" >
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user  
+	</select>
+	
+	<!-- 查找所有 -->
+	<select id="findAllByPros" resultType="NonoUser" parameterType="java.util.HashMap">
+		select  
+			<include refid="select_columns" />  
+		from  
+			nono_user  
+			<include refid="select_where_for_list" />  
+	</select>
+	
+	<!-- 插入一个记录 需要插入返回的主键：添加 useGeneratedKeys="true" keyColumn="primarykey" keyProperty="primarykey" -->
+	<insert id="addOne" parameterType="nonoUser" >
+		insert into nono_user (user_name,mobile_number,nono_code,certificate_number,user_type,is_delete,create_date,update_date)
+	     values 
+	     (
+	         #{userName}, #{mobileNumber}, #{nonoCode}, #{certificateNumber}, #{userType}, #{isDelete}, now(), now()
+	     )
+	</insert>
+	
+	
+	<!-- 插入所有记录 -->
+	<insert id="addAll" parameterType="java.util.List" >
+		 insert into nono_user (user_name,mobile_number,nono_code,certificate_number,user_type,is_delete,create_date,update_date)
+	     values  
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      ( 
+	          #{item.userName}, #{item.mobileNumber}, #{item.nonoCode}, #{item.certificateNumber}, #{item.userType}, #{item.isDelete}, now(), now()
+	      )
+	    </foreach>
+	</insert>
+
+
+	<!-- 根据主键修改 -->
+	<update id="updateOne" parameterType="nonoUser" >
+		 update nono_user 
+    	<set> 
+        	 <if test="userName != null  and userName != '' ">
+		      user_name=#{userName}, 
+        	</if> 
+        	 <if test="mobileNumber != null  and mobileNumber != '' ">
+		      mobile_number=#{mobileNumber}, 
+        	</if> 
+        	 <if test="nonoCode != null  and nonoCode != '' ">
+		      nono_code=#{nonoCode}, 
+        	</if> 
+        	 <if test="certificateNumber != null  and certificateNumber != '' ">
+		      certificate_number=#{certificateNumber}, 
+        	</if> 
+        	 <if test="userType != null  and userType != '' ">
+		      user_type=#{userType}, 
+        	</if> 
+        	 <if test="isDelete != null  and isDelete !=-1  ">
+		      is_delete=#{isDelete}, 
+        	</if> 
+        	 <if test="createDate != null  and createDate != '' ">
+		      create_date=#{createDate}, 
+        	</if> 
+        	 <if test="updateDate != null  and updateDate != '' ">
+		      update_date=now() 
+        	</if> 
+    	</set>  
+	    where  user_code = #{userCode}
+	</update>
+	
+	
+	<!-- 修改某个属性 updateCloumn 为要修改的列 -->  
+	<update id="updateAll" parameterType="java.util.HashMap" >
+		update nono_user  set  updateCloumn = #{updateCloumn} 
+	    where user_code  in  
+	    <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	      #{item}
+	    </foreach>
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		 delete from nono_user  where  user_code = #{userCode}
+	</delete>
+	
+	
+	<!-- 删除记录 -->
+	<delete id="deleteAll" parameterType="java.util.List" >
+		 delete from  nono_user  where  user_code in 
+	   <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+	     #{item}
+	   </foreach>
+	</delete>
+
+
+	<!-- NN用户管理 列表总数-->
+	<select id="getObjsCount" resultType="java.lang.Integer">
+		select 
+			count(1) 
+		from 
+			nono_user
+	</select>
+	
+	
+	<!-- NN用户管理 列表总数-->
+	<select id="getObjsByProsCount" resultType="java.lang.Integer"  parameterType="nonoUser">
+		select 
+			count(1) 
+		from 
+			nono_user  
+			<include refid="select_where_for_one"/>
+	</select>
+
+</mapper>
